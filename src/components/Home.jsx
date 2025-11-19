@@ -1,5 +1,11 @@
+import {Outlet} from "react-router";
+import CreateNavbar from "./Navbar";
+
 export default function Home (props) {
     return <div>
-        <h1>Home</h1>
+        <CreateNavbar />
+        <div style={{margin: "1rem"}}>
+            <Outlet />
+        </div>
     </div>
 }
