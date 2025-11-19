@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import {useParams} from "react-router";
 
 export default function ViewSpecificRestaurant(props) {
+    const {id} = useParams();
     const [messages, setMessages] = useState([]);
     useEffect( () => {
         fetch("https://cs571api.cs.wisc.edu/rest/f25/bucket/messages", {
@@ -13,7 +15,7 @@ export default function ViewSpecificRestaurant(props) {
             setMessages(data.results);
             console.log(data.results);
         })
-    }, []);
+    }, [id]);
     // be able to add messages here
     return <div>
         <h1>{props.rest.restaurant}</h1>
