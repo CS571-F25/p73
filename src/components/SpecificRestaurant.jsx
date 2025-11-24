@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import {useParams} from "react-router";
 
+
+// BUGS:
+// Currently if you update the likes in Restaurants.jsx, then visit the restaurant, it will NOT update the restaurants likes UNLESS you refresh the page. 
+// I probably need to use contexts then to store the likes :(
 export default function ViewSpecificRestaurant(props) {
     const {id} = useParams();
     const [messages, setMessages] = useState([]);
