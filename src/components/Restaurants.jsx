@@ -1,13 +1,16 @@
-import {useEffect, useState } from "react";
+import {useEffect, useState, useContext } from "react";
 import {useNavigate} from "react-router";
 import { Card, Button, Row, Col, Container } from "react-bootstrap";
 import SpecificRestaurant from "./SpecificRestaurant";
+import RestaurantsContext from "../RestaurantsContextProvider"
 
 export default function Restaurants() {
-    const [restaurants, setRestaurants] = useState({});
-    const [liked, setLiked] = useState(true);
+    const { restaurants, refresh } = useContext(RestaurantsContext);
+    //const [restaurants, setRestaurants] = useState({});
+    //const [liked, setLiked] = useState(true);
     const navigate = useNavigate();
 
+    /*
     const refresh = () => {
         fetch("https://cs571api.cs.wisc.edu/rest/f25/bucket/restaurants", {
             method: "GET",
@@ -21,12 +24,15 @@ export default function Restaurants() {
             setRestaurants(data.results);
         })
     };
+    */
 
+    /*
     // i had something in my head with the like state 
     function toggleLike() {
         setLiked(prev => !prev);
         refresh();
     }
+    */
 
     function increaseLike(rest) {
         //console.log(rest);
@@ -47,7 +53,7 @@ export default function Restaurants() {
         .then(res => {
             if(res.status === 200) {
                 //console.log("Worked :)");
-                toggleLike();
+                refresh();
             }
             else {
                 console.log("Uh oh");
@@ -73,7 +79,7 @@ export default function Restaurants() {
         .then(res => {
             if(res.status === 200) {
                 //console.log("Worked :)");
-                toggleLike();
+                refresh();
             }
             else {
                 console.log("Uh oh");
@@ -81,7 +87,7 @@ export default function Restaurants() {
         })
     }
 
-    useEffect(toggleLike, []);
+    //useEffect(toggleLike, []);
     // PLANS: 
     // Of course styilize everything. Using basic react bootstrap stuff is kind of boring.
     // I need to do some sort of storage with the likes. I need to keep track of what restaurants

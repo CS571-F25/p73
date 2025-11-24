@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {useParams} from "react-router";
+import RestaurantsContext from "../RestaurantsContextProvider"
 
 
 // BUGS:
 // Currently if you update the likes in Restaurants.jsx, then visit the restaurant, it will NOT update the restaurants likes UNLESS you refresh the page. 
 // I probably need to use contexts then to store the likes :(
-export default function ViewSpecificRestaurant(props) {
-    const {id} = useParams();
+export default function ViewSpecificRestaurant({rest}) {
+    const {restaurants, refresh} = useContext(RestaurantsContext);
     const [messages, setMessages] = useState([]);
+    //console.log(restaurants);
+    const restaurant = restaurants ? restaurants.filter(r => r.id === rest.id) : null;
+    //console.log(rest);
+    //console.log(restaurant);
     useEffect( () => {
         fetch("https://cs571api.cs.wisc.edu/rest/f25/bucket/messages", {
             headers: {
@@ -17,15 +22,20 @@ export default function ViewSpecificRestaurant(props) {
         .then(response => response.json())
         .then(data => {
             setMessages(data.results);
-            console.log(data.results);
+            //console.log(data.results);
         })
-    }, [id]);
+    }, []);
+
+    if(!restaurant) {
+        return <h2>Loading...</h2>
+    }
+
     // be able to add messages here
     return <div>
-        <h1>{props.rest.restaurant}</h1>
-        <h2>{props.rest.likes}</h2>
+        <h1>{restaurant[0].restaurant}</h1>
+        <h2>{restaurant[0].likes}</h2>
         {messages ? Object.values(messages).filter(msg => {
-            return msg.restaurant === props.rest.restaurant
+            return msg.restaurant === rest.restaurant
         }).map(message => (
             message.messages.map((m, i) => {
                 return <p key={i}>{m}</p>
