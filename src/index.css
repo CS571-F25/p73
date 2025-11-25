@@ -51,6 +51,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* when I switch between my restaurants.jsx and blog.jsx, the navbar shifts a bit which annoys me
+the fix for that was apparently just to do this? I don't know, I don't get it honestly*/
+html {
+  overflow-y: scroll;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -6,33 +6,7 @@ import RestaurantsContext from "../RestaurantsContextProvider"
 
 export default function Restaurants() {
     const { restaurants, refresh } = useContext(RestaurantsContext);
-    //const [restaurants, setRestaurants] = useState({});
-    //const [liked, setLiked] = useState(true);
     const navigate = useNavigate();
-
-    /*
-    const refresh = () => {
-        fetch("https://cs571api.cs.wisc.edu/rest/f25/bucket/restaurants", {
-            method: "GET",
-            headers: {
-                "X-CS571-ID": "bid_798df9ba4f1590b9279a55c6fe470c2556e7bdf95f6f0427f298f943d287ba94"
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            //console.log(data.results);
-            setRestaurants(data.results);
-        })
-    };
-    */
-
-    /*
-    // i had something in my head with the like state 
-    function toggleLike() {
-        setLiked(prev => !prev);
-        refresh();
-    }
-    */
 
     function increaseLike(rest) {
         //console.log(rest);
@@ -87,7 +61,6 @@ export default function Restaurants() {
         })
     }
 
-    //useEffect(toggleLike, []);
     // PLANS: 
     // Of course styilize everything. Using basic react bootstrap stuff is kind of boring.
     // I need to do some sort of storage with the likes. I need to keep track of what restaurants
@@ -100,7 +73,10 @@ export default function Restaurants() {
         <br></br>
         <Container>
             <Row>
-                {restaurants ? Object.values(restaurants).map(rest => (
+                {restaurants ? Object.values(restaurants)
+                .sort((a, b) => b.likes - a.likes)
+                .slice(0, 10)
+                .map(rest => (
                     <Col key={rest.restaurant} xs={12} md={4} lg={3} xl={3}>
                         <Card style={{width: '100%', aspectRatio: '1/1'}} onClick={() => {navigate(`/restaurants/${rest.restaurant}`)}}>
                             <h2 style={{margin: 'auto'}}>{rest.restaurant}</h2>

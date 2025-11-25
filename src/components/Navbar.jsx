@@ -23,7 +23,7 @@ export default function CreateNavbar(props) {
                 // declarative programming things) can't be used on an object, but can be used on an
                 // array of objects. 
                 setRestaurants(Object.values(data.results)); 
-                console.log(Object.values(data.results));
+                //console.log(Object.values(data.results));
             })
         }
     
