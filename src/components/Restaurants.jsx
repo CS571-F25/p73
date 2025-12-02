@@ -3,63 +3,23 @@ import {useNavigate} from "react-router";
 import { Card, Button, Row, Col, Container } from "react-bootstrap";
 import SpecificRestaurant from "./SpecificRestaurant";
 import RestaurantsContext from "../RestaurantsContextProvider"
+import ToggleLike from "./ToggleLike";
+import RestaurantCard from "./RestaurantCards";
+
+// ok so while searching for design related stuff, I found this:
+// https://react-bootstrap.netlify.app/docs/utilities/ratio/
+// I might use it. I'll see if I have time.
 
 export default function Restaurants() {
     const { restaurants, refresh } = useContext(RestaurantsContext);
-    const navigate = useNavigate();
-
-    function increaseLike(rest) {
-        //console.log(rest);
-        fetch(`https://cs571api.cs.wisc.edu/rest/f25/bucket/restaurants?id=${rest.id}`, {
-            method: "PUT",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CS571-ID": "bid_798df9ba4f1590b9279a55c6fe470c2556e7bdf95f6f0427f298f943d287ba94"
-            },
-            body: JSON.stringify({
-                "restaurant": rest.restaurant,
-                "likes": rest.likes + 1,
-                "img": rest.img,
-                "id": rest.id
-            })
-        })
-        .then(res => {
-            if(res.status === 200) {
-                //console.log("Worked :)");
-                refresh();
-            }
-            else {
-                console.log("Uh oh");
-            }
-        })
-    }
-
-    function decreaseLike(rest) {
-        fetch(`https://cs571api.cs.wisc.edu/rest/f25/bucket/restaurants?id=${rest.id}`, {
-            method: "PUT",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CS571-ID": "bid_798df9ba4f1590b9279a55c6fe470c2556e7bdf95f6f0427f298f943d287ba94"
-            },
-            body: JSON.stringify({
-                "restaurant": rest.restaurant,
-                "likes": rest.likes - 1,
-                "img": rest.img,
-                "id": rest.id
-            })
-        })
-        .then(res => {
-            if(res.status === 200) {
-                //console.log("Worked :)");
-                refresh();
-            }
-            else {
-                console.log("Uh oh");
-            }
-        })
-    }
+    // I am writing this after having reviewed a bunch of local storage stuff for HW11, so the
+    // idea for likedRestaurants came from HW11 to some extent. Since I am only storing restaurants the
+    // user liked, and not the message history for each persona, I don't actually need to care about the key
+    // anymore, so I can just set it to something like "liked-restaurants"
+    const existingLikedRestaurants = localStorage.getItem("liked-restaurants")
+    const [likedRestaurants, setLikedRestaurants] = useState(() => {
+        return JSON.parse(existingLikedRestaurants ? existingLikedRestaurants : "{}");
+    });
 
     // PLANS: 
     // Of course styilize everything. Using basic react bootstrap stuff is kind of boring.
@@ -67,31 +27,28 @@ export default function Restaurants() {
     // the user has liked so far to keep them from just spamming the like button to make sure their
     // favorite restaurant doesn't become the best. I'll probably use localstorage or sessionstorage for that.
     // In the end, I want to make it like a heart button instead of having 2 different buttons
-    return <div>
-        <h1>Top 10 Restaurants: </h1>
-        <p>Only showcasing the most popular restaurants!</p>
+    // ^ update to past me. I don't think this is possible. I googled it, and like people were making
+    // their own like pngs and stuff, and I don't reaaallllyy wanna deal with that, so I'm not gonna do that. I'll
+    // just stick to whatever bootstrap has given me so far
+    // good website to make gradients: https://cssgradient.io/
+    return <div style={{background: "linear-gradient(45deg,rgba(255, 255, 255, 1) 0%, rgba(249, 249, 249, 1) 35%, rgba(224, 247, 250, 1) 100%)"}}>
+        <div style={{padding: "1rem"}}>
+            <h1>Top 10 Restaurants: </h1>
+            <p>Only showcasing the most popular restaurants!</p>
+        </div>
         <br></br>
         <Container>
             <Row>
                 {restaurants ? Object.values(restaurants)
                 .sort((a, b) => b.likes - a.likes)
                 .slice(0, 10)
-                .map(rest => (
+                .map(rest => {
+                    return(
                     <Col key={rest.restaurant} xs={12} md={4} lg={3} xl={3}>
-                        <Card style={{width: '100%', aspectRatio: '1/1'}} onClick={() => {navigate(`/restaurants/${rest.restaurant}`)}}>
-                            <h2 style={{margin: 'auto'}}>{rest.restaurant}</h2>
-                            <h3>{rest.likes}</h3>
-                            <Button variant="success" onClick={(e) => {
-                                e.stopPropagation()
-                                increaseLike(rest)
-                                }}>Like</Button>
-                            <Button variant="secondary" onClick={(e) => {
-                                e.stopPropagation()
-                                decreaseLike(rest)
-                            }} >Dislike</Button>
-                        </Card>
+                        <RestaurantCard refresh={refresh} rest={rest}/>
                     </Col>
-                ))
+                );
+                })
                 : <h3>Loading...</h3>}
             </Row>
         </Container>

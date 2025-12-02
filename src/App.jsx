@@ -7,11 +7,12 @@ import Search from "./components/Blog"
 import NoMatch from "./components/NoMatch"
 import Landing from "./components/Landing"
 import SpecificRestaurant from "./components/SpecificRestaurant"
+import RestaurantsProvider from './RestaurantsContextProvider';
 
 function App() {
-  const [restaurants, setRestaurants] = useState({});
+  const [restaurants, setRestaurants] = useState([]);
 
-  useEffect( () => {
+  function refresh() {
     fetch('https://cs571api.cs.wisc.edu/rest/f25/bucket/restaurants', {
       method: "GET",
       headers: {
@@ -20,11 +21,17 @@ function App() {
     })
     .then(response => response.json())
     .then(data => {
-      setRestaurants(data.results);
+      setRestaurants(Object.values(data.results));
     })
-  }, []);
+  }
 
-  return <HashRouter>
+  useEffect(refresh, []);
+
+  // just moved the context provider from the navbar up to here  because of the "create restaurants"
+  // thing im trying to do. I need it to also create a page for the restaurants
+  return (
+  <RestaurantsProvider.Provider value={{restaurants, refresh}}>
+  <HashRouter>
     <Routes>
       <Route path="/" element={<Home />}>
         <Route index element={<Landing />} />
@@ -39,6 +46,8 @@ function App() {
       </Route>
     </Routes>
   </HashRouter>
+  </RestaurantsProvider.Provider>
+  )
 }
 
 export default App

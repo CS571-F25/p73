@@ -3,10 +3,14 @@ import {Container, Nav, Navbar} from "react-bootstrap";
 import {Link, Outlet} from "react-router";
 import RestaurantsProvider from "../RestaurantsContextProvider";
 //import { RestaurantsProvider } from "../RestaurantsContextProvider";
-
+import crest from "../assets/fantastic.png";
 
 export default function CreateNavbar(props) {
 
+    // moved the context providing stuff out of the navbar to app.jsx because of routing purposes.
+    // Basically, I want it so that when we create a new restaurant, a new page is made for it. But, since
+    // the context is here, not in app.jsx, we can't actually do that. So I just moved the context out to app.jsx.
+    /*
     const [restaurants, setRestaurants] = useState([]);
     
         function refresh() {
@@ -28,14 +32,22 @@ export default function CreateNavbar(props) {
         }
     
         useEffect(refresh, []);
-
+    */
     return (
     <div>
-    <Navbar style={{ backgroundColor: "#92c3fcff"}} variant="light" sticky="top" expand="sm" collapseOnSelect>
+    <Navbar style={{ backgroundColor: "black"}} variant="dark" sticky="top" expand="sm" collapseOnSelect>
         <Container>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Brand>
-                Menu Meter
+            <Navbar.Brand className="d-flex align-items-center">
+                <img
+                    alt="Menu Ranker Logo"
+                    src={crest}
+                    width="60"
+                    height="60"
+                    style={{marginRight: "10px"}}
+                    className="d-inline-block align-top"
+                />{' '}
+                <span className="fs-4 text-white">Menu Ranker</span>
             </Navbar.Brand>
             <Navbar.Collapse id="responsive-navbar-nav" className="me-auto">
                 <Nav>
@@ -46,11 +58,15 @@ export default function CreateNavbar(props) {
             </Navbar.Collapse>
         </Container>
     </Navbar>
-    <div style={{margin: "1rem" }}>
-        <RestaurantsProvider.Provider value={{restaurants, refresh}}>
-            <Outlet />
-        </RestaurantsProvider.Provider>
-        </div>
+    {
+        // so I had basically stolen this navbar from one of the HWs we did, and they used
+        // a margin of 1rem, which I also copied. Then when trying to style my website, I realzied
+        // that I couldn't have anything reach the edges of the screen no matter how I tried. 
+        // Eventually I realized it was this, but I was really confused for that period of time
+    }
+    <div style={{margin: 0, padding: 0}}>
+        <Outlet />
+    </div>
     </div>
     )
 }

@@ -1,17 +1,27 @@
 import { useEffect, useState, useContext, useRef } from "react";
-import {useParams} from "react-router";
 import RestaurantsContext from "../RestaurantsContextProvider"
-import {Form, Pagination, Button} from "react-bootstrap";
+import {Form, Pagination, Button, Card, Container, Row, Col, Stack, Badge, Modal} from "react-bootstrap";
+import CreatePagination from "./HandlePagination";
+import ToggleLike from "./ToggleLike";
+import ShowTagsModal from "./TagsModal";
 
-
-// BUGS:
-// Currently if you update the likes in Restaurants.jsx, then visit the restaurant, it will NOT update the restaurants likes UNLESS you refresh the page. 
-// I probably need to use contexts then to store the likes :(
 export default function ViewSpecificRestaurant({rest}) {
+    const [isAdd, setIsAdd] = useState(false);
     const {restaurants, refresh} = useContext(RestaurantsContext);
+    const existingLikedRestaurants = localStorage.getItem("liked-restaurants")
+    const [likedRestaurants, setLikedRestaurants] = useState(() => {
+        return JSON.parse(existingLikedRestaurants ? existingLikedRestaurants : "{}");
+    });
+    const existingMessages = localStorage.getItem("messages");
+    // so this one is gonna be almost identical to the previous localstorage one. For each restaurant, instead
+    // of having "true" or "false", it'll just be an array of messages that you have typed.
+    const [myMessages, setMyMessages] = useState(() => {
+        return JSON.parse(existingMessages ? existingMessages : "{}");
+    });
     const [messages, setMessages] = useState([]);
     const messageToSend = useRef();
     const [page, setPage] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     const messagesPerRestaurant = 5;
     //console.log(restaurants);
@@ -31,6 +41,12 @@ export default function ViewSpecificRestaurant({rest}) {
         })
     }, []);
 
+    function  updateLikedRestaurants(id, liked) {
+        const updated = {...likedRestaurants, [id]: liked};
+        setLikedRestaurants(updated);
+        localStorage.setItem("liked-restaurants", JSON.stringify(updated));
+    }
+
     function handleSubmit(e) {
         e?.stopPropagation();
         const newMessage = messageToSend.current.value.trim();
@@ -43,6 +59,7 @@ export default function ViewSpecificRestaurant({rest}) {
             return msg.restaurant === rest.restaurant
         })
 
+        // i mean the ternarny operation is kinda useless now considering it is guaranteed to have a message but whatever
         const updatedMessages = restaurantsMessages[0] ? [...restaurantsMessages[0].messages, newMessage] : [newMessage];
         console.log(restaurantsMessages[0].id);
         fetch(`https://cs571api.cs.wisc.edu/rest/f25/bucket/messages?id=${restaurantsMessages[0].id}`, {
@@ -60,7 +77,13 @@ export default function ViewSpecificRestaurant({rest}) {
         })
         .then(response => {
             if(response.status === 200) {
+                // looks odd but we're just making sure we're appending the message to the correct restaurants msg array
                 setMessages(prev => prev.map(msg => msg.id === restaurantsMessages[0].id ? {...msg, messages: updatedMessages } : msg));
+                // basically identical to the one above, we just have the storage for all the other restaurants be the same, but for this restaurant
+                // if there are any existing messages, add onto it, otherwise start the array for it by adding this message
+                const updated = {...myMessages, [rest.restaurant]: [...(myMessages[rest.restaurant] || []), newMessage]};
+                setMyMessages(updated);
+                localStorage.setItem("messages", JSON.stringify(updated));
                 messageToSend.current.value = "";
                 alert("Review posed!");
             }
@@ -99,36 +122,104 @@ export default function ViewSpecificRestaurant({rest}) {
         );
     }
     // be able to add messages here
-    return <div>
-        <h1>{restaurant[0].restaurant}</h1>
-        <h2>{restaurant[0].likes}</h2>
-        <hr></hr>
-        <Form onSubmit={handleSubmit}>
-            <Form.Label htmlFor="messageInput">Enter In A Review</Form.Label>
-            <Form.Control id="messageInput" ref={messageToSend}></Form.Control>
-            <Button type="submit">Search</Button>
-        </Form>
-        <hr></hr>
-        <h3>Reviews</h3>
-        {currentMessages ? currentMessages.map((message, i)=> (
-            <p key={i}>{message}</p>
-        ))
-        : <h2>Loading...</h2>}
+    const isLiked = likedRestaurants[restaurant[0].id] === true;
 
-        {list.length > messagesPerRestaurant ? 
-        <Pagination>
-            <Pagination.Item onClick={() => {
-                if(page > 1) {
-                    setPage(page - 1);
-                }
-            }} disabled={page === 1 || totalPages === 1}>Previous</Pagination.Item>
-            {items}
-            <Pagination.Item onClick={() => {
-                if(page < totalPages) {
-                    setPage(page+1);
-                }
-            }} disabled={page === totalPages || totalPages === 1}>Next</Pagination.Item>
-        </Pagination>
-        : null}
+    function handleDelete(message) {
+        // this updated is for the localstorage
+        const updated = {...myMessages}; // basically just get the messages, and update 
+        // what we have stored for this specific restaurant to be what it already is WITHOUT
+        // the message we wish to delete 
+        updated[rest.restaurant] = updated[rest.restaurant].filter(m => m !== message);
+        setMyMessages(updated);
+        localStorage.setItem("messages", JSON.stringify(updated));
+        const restaurantsMessages = messages.filter(msg => msg.restaurant === rest.restaurant)
+
+        // i really dislike that .filter must return an array even if it's only a single item
+        const updatedMessagesArray = restaurantsMessages[0].messages.filter(m => m !== message);
+
+        fetch(`https://cs571api.cs.wisc.edu/rest/f25/bucket/messages?id=${restaurantsMessages[0].id}`, {
+            method: "PUT",
+            credientials: "include",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CS571-ID": "bid_798df9ba4f1590b9279a55c6fe470c2556e7bdf95f6f0427f298f943d287ba94"
+            },
+            body: JSON.stringify({
+                "restaurant": rest.restaurant,
+                "messages": updatedMessagesArray,
+                "id": restaurantsMessages[0].id
+            })
+        })
+        .then(response => {
+            if(response.status === 200) {
+                setMessages(prev => prev.map(msg => msg.id === restaurantsMessages[0].id ? {...msg, messages: updatedMessagesArray } : msg));
+                alert("Successfully deleted post!");
+            }
+            else {
+                console.log("uh oh");
+            }
+        })
+    }
+    // parts of the styling were done with AI help. I didn't know how to formulate my question into a proper search
+    // so I just asked AI "how can I make this thing smaller" or whatever
+    // also found out, when trying to figure out how to make small gray boxes stack on top of each other, about bootstraps stack:
+    // https://react-bootstrap.netlify.app/docs/layout/stack/
+    return <div>
+        <Card className="rounded-0 border-0 shadow">
+            <Card.Img src={restaurant[0].img} alt={restaurant[0].restaurant} style={{height: "45vh", objectFit: "cover"}}></Card.Img>
+        </Card>
+        <Container className="my-4">
+            <Row className="align-items-center justify-content-between">
+                <Col xs="auto">
+                    <Stack gap={2} className="mb-3">
+                        <h1 className="mb-0">{restaurant[0].restaurant}</h1>
+                        <span className="text muted fs-4">{restaurant[0].likes} Likes</span>
+                    </Stack>
+                    <Stack direction="horizontal" gap={2}>
+                        <Badge bg="danger" onClick={() => {setShowModal(true); setIsAdd(false);}}>-</Badge>
+                        {restaurant[0].tags.map((tags, i) => {
+                            return <Badge key={i} bg="secondary">{tags}</Badge>
+                        })}
+                        <Badge bg="success" onClick={() => {setShowModal(true); setIsAdd(true);}}>+</Badge>
+                    </Stack>
+                </Col>
+                <Col xs="auto">
+                    <ToggleLike rest={restaurant[0]} isLiked={isLiked} updateLikedRestaurants={updateLikedRestaurants} refresh={refresh}></ToggleLike>
+                </Col>
+            </Row>
+            {showModal && (
+                <ShowTagsModal show={showModal} setIsAddingRest={setShowModal} refresh={refresh} rest={rest} isAdd={isAdd} />
+            )}
+            <hr></hr>
+            <Card className="p-3 shadow-sm mb-4">
+                <Form onSubmit={handleSubmit} className="mb-4">
+                    <Form.Label htmlFor="messageInput" className="fs-5">Enter In A Review</Form.Label>
+                    <Form.Control id="messageInput" ref={messageToSend} className="mb-3"></Form.Control>
+                    <Button type="submit">Search</Button>
+                </Form>
+            </Card>
+            <hr></hr>
+            <h3 className="mb-3">Reviews</h3>
+            {currentMessages ? (
+            <Stack gap={3}>
+                {currentMessages.map((message, i)=> {
+                    let isMine = false;
+                    if((myMessages[rest.restaurant] || []).includes(message)) {
+                        isMine = true;
+                    }
+                    return (
+                    <Card key={i} className="p-2 shadow-sm" style={{backgroundColor: "#f7f7f7"}}>
+                        <span>{message}</span>
+                        <br></br>
+                        {isMine && (
+                            <Button size="sm" variant="danger" onClick={() => handleDelete(message)}>Delete Review</Button>
+                        )}
+                    </Card>
+                    )
+                })}
+            </Stack>)
+            : <h2>Loading...</h2>}
+            <CreatePagination itemToSlice={list} maxPerPage={messagesPerRestaurant} setPage={setPage} page={page}/>
+        </Container>
     </div>
 }

@@ -1,3 +1,4 @@
+/*
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -53,6 +54,7 @@ button:focus-visible {
 
 /* when I switch between my restaurants.jsx and blog.jsx, the navbar shifts a bit which annoys me
 the fix for that was apparently just to do this? I don't know, I don't get it honestly*/
+/*
 html {
   overflow-y: scroll;
 }
@@ -69,3 +71,4 @@ html {
     background-color: #f9f9f9;
   }
 }
+*/
