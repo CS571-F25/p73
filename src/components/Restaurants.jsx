@@ -38,7 +38,7 @@ export default function Restaurants() {
         </div>
         <br></br>
         <Container>
-            <Row>
+            <Row className="justify-content-center">
                 {restaurants ? Object.values(restaurants)
                 .sort((a, b) => b.likes - a.likes)
                 .slice(0, 10)
