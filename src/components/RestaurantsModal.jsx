@@ -97,6 +97,8 @@ export default function AddRestaurantModal({show, setIsAddingRest, refresh}) {
             })
         });
 
+        // basically initialize the localstorage for this new restaurant
+        localStorage.setItem("messages", JSON.stringify({ [nameRef.current.value.trim()]: [msgRef.current.value.trim()]}));
         // now messages
         fetch("https://cs571api.cs.wisc.edu/rest/f25/bucket/messages/", {
             method: "POST",
