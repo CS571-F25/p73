@@ -5,7 +5,7 @@ export default function CreateFilters({selectedPrice, selectedCuisine, selectedO
     <Container fluid className="my-3">
         <Row className="g-3">
             <Col xs={12} md={4}>
-                <DropdownButton as={ButtonGroup} title={"Price"} variant={"dark"} className="w-100">
+                <DropdownButton aria-label="Price" as={ButtonGroup} title={"Price"} variant={"dark"} className="w-100">
                     {price.map(p => (
                         <Dropdown.Item key={p} active={selectedPrice === p} onClick={() => setSelectedPrice(p)}>{p}</Dropdown.Item>
                     ))}
@@ -14,7 +14,7 @@ export default function CreateFilters({selectedPrice, selectedCuisine, selectedO
                 </DropdownButton>
             </Col>
             <Col xs={12} md={4}>
-                <DropdownButton as={ButtonGroup} title={"Cuisine"} variant={"dark"} className="w-100">
+                <DropdownButton aria-label="Cuisine" as={ButtonGroup} title={"Cuisine"} variant={"dark"} className="w-100">
                     {cuisine.map(p => (
                         <Dropdown.Item key={p} active={selectedCuisine === p} onClick={() => setSelectedCuisine(p)}>{p}</Dropdown.Item>
                     ))}
@@ -24,7 +24,7 @@ export default function CreateFilters({selectedPrice, selectedCuisine, selectedO
             </Col>
 
             <Col xs={12} md={4}>
-                <DropdownButton as={ButtonGroup} title={"Other"} variant={"dark"} className="w-100">
+                <DropdownButton aria-label="Other" as={ButtonGroup} title={"Other"} variant={"dark"} className="w-100">
                     {misc.map(p => (
                         <Dropdown.Item key={p} active={selectedOther === p} onClick={() => setSelectedOther(p)}>{p}</Dropdown.Item>
                     ))}

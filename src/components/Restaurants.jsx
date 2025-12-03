@@ -44,7 +44,7 @@ export default function Restaurants() {
                 .slice(0, 10)
                 .map(rest => {
                     return(
-                    <Col key={rest.restaurant} xs={12} md={4} lg={3} xl={3}>
+                    <Col key={rest.restaurant} xs={12} sm={6} md={4} lg={3} xl={3}>
                         <RestaurantCard refresh={refresh} rest={rest}/>
                     </Col>
                 );

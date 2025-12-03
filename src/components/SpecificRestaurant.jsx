@@ -215,7 +215,7 @@ export default function ViewSpecificRestaurant({rest}) {
                         <span>{message}</span>
                         <br></br>
                         {isMine && (
-                            <Button size="sm" variant="danger" onClick={() => handleDelete(message)}>Delete Review</Button>
+                            <Button aria-label="Delete Review" size="sm" variant="danger" onClick={() => handleDelete(message)}>Delete Review</Button>
                         )}
                     </Card>
                     )
