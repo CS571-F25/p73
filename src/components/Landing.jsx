@@ -21,7 +21,7 @@ export default function Landing(props) {
         navigate(`/restaurants/${randomRestaurant.restaurant}`);
     }
 
-    return <Container fluid className="py-5 text-center" style={{background: "radial-gradient(circle,rgba(255, 255, 255, 1) 0%, rgba(219, 252, 255, 1) 100%)"}}>
+    return <Container fluid className="py-5 text-center" style={{minHeight: "100vh", background: "radial-gradient(circle,rgba(255, 255, 255, 1) 0%, rgba(219, 252, 255, 1) 100%)"}}>
         <h1>Welcome to Menu Meter!</h1>
 
         <Stack className="justify-content-center mb-5" direction="horizontal" gap={4}>
