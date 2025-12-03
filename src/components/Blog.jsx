@@ -196,7 +196,7 @@ export default function Search() {
                 <Form.Label htmlFor="restaurantInput">Enter Restaurant</Form.Label>
                 <Form.Control id="restaurantInput" ref={restaurantRef}></Form.Control>
                 <br></br>
-                <Button type="submit">Search</Button>
+                <Button type="submit" className="mt-2" variant="primary">Search</Button>
                 <br></br>
                 <br></br>
                 <p>Can't remember the restaurants name but remember the food? Try using a filter to narrow down your search!</p>
@@ -229,7 +229,7 @@ export default function Search() {
             : 
             <div>
                 <p>It seems like no restaurants match your search and/or filters! If you want, you can add the restaurant:</p>
-                <Button variant={"success"} onClick={(e) => {
+                <Button variant={"success"} className="mt-2" onClick={(e) => {
                     e.stopPropagation();
                     setIsAddingRest(true);
                 }}>Add a Restaurant!</Button>

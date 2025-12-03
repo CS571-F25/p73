@@ -27,6 +27,11 @@ export default function RestaurantCard({refresh, rest}) {
     }
 
     const isLiked = likedRestaurants[rest.id] === true;
+    // so I got near the end of my design and I wanted to make it so the card is "tab-able", because that was a requirement, i.e.,
+    // every interactable feature should be usable via a keyboard. I searched online and I found this:
+    // https://github.com/react-bootstrap/react-bootstrap/issues/6705
+    // basically, it seems like cards shouldn't be used as interactable features. SO, instead of re-writing this entire component, I decided
+    // to keep it as it is, but also create an extra "go to" button that keyboard users can use to navigate to the specific restaurant
     return (
         <Card className="shadow" style={{width: '100%', aspectRatio: '1/1'}} onClick={() => {navigate(`/restaurants/${rest.restaurant}`)}}>
             <Card.Img variant="top" src={rest.img} style={{width: "100%", height: "50%", objectFit: "cover"}} alt={rest.restaurant} />
@@ -43,6 +48,11 @@ export default function RestaurantCard({refresh, rest}) {
                 ))}
             </Container>
             <ToggleLike rest={rest} isLiked={isLiked} updateLikedRestaurants={updateLikedRestaurants} refresh={refresh} />
+            <br></br>
+            <Button className="w-100" variant="secondary" onClick={(e) => {
+                e?.stopPropagation();
+                navigate(`/restaurants/${rest.restaurant}`)
+                }}>Visit</Button>
             </Card.Body>
         </Card>
     )

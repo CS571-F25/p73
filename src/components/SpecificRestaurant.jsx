@@ -164,6 +164,9 @@ export default function ViewSpecificRestaurant({rest}) {
     // so I just asked AI "how can I make this thing smaller" or whatever
     // also found out, when trying to figure out how to make small gray boxes stack on top of each other, about bootstraps stack:
     // https://react-bootstrap.netlify.app/docs/layout/stack/
+
+    // for accessibility stuff, I have found out I can just use aria-label: 
+    // https://stackoverflow.com/questions/73038830/how-do-i-write-alt-text-for-an-icon-inside-a-button-tag
     return <div>
         <Card className="rounded-0 border-0 shadow">
             <Card.Img src={restaurant[0].img} alt={restaurant[0].restaurant} style={{height: "45vh", objectFit: "cover"}}></Card.Img>
@@ -176,11 +179,11 @@ export default function ViewSpecificRestaurant({rest}) {
                         <span className="text muted fs-4">{restaurant[0].likes} Likes</span>
                     </Stack>
                     <Stack direction="horizontal" gap={2}>
-                        <Badge bg="danger" onClick={() => {setShowModal(true); setIsAdd(false);}}>-</Badge>
+                        <Button aria-label="Delete Tag" variant="danger" size="sm" onClick={() => {setShowModal(true); setIsAdd(false);}}>-</Button>
                         {restaurant[0].tags.map((tags, i) => {
                             return <Badge key={i} bg="secondary">{tags}</Badge>
                         })}
-                        <Badge bg="success" onClick={() => {setShowModal(true); setIsAdd(true);}}>+</Badge>
+                        <Button aria-label="Add Tag" variant="success" size="sm" onClick={() => {setShowModal(true); setIsAdd(true);}}>+</Button>
                     </Stack>
                 </Col>
                 <Col xs="auto">

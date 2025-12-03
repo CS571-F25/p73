@@ -23,7 +23,6 @@ export default function Landing(props) {
 
     return <Container fluid className="py-5 text-center" style={{background: "radial-gradient(circle,rgba(255, 255, 255, 1) 0%, rgba(219, 252, 255, 1) 100%)"}}>
         <h1>Welcome to Menu Meter!</h1>
-        <p className="fs-4">I like food</p>
 
         <Stack className="justify-content-center mb-5" direction="horizontal" gap={4}>
             <Button variant="success" onClick={(e) => {
@@ -41,13 +40,13 @@ export default function Landing(props) {
             : <h2>Loading...</h2>}
         </Stack>
 
-        <h3 className="mb-4 text-center">Featured Restaurants</h3>
+        <h2 className="mb-4 text-center">Featured Restaurants</h2>
         {restaurants.length > 0 ? (
             <Row>
                 {restaurants.slice(0, 4).map((rest, index) => {
                     // hmm
                     return (
-                        <Col key={index}>
+                        <Col key={index} xs={12} sm={12} md={6} lg={4} xl={3}>
                             <RestaurantCard refresh={refresh} rest={rest}></RestaurantCard>
                         </Col>
                     )

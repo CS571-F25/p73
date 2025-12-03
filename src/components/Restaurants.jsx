@@ -49,7 +49,7 @@ export default function Restaurants() {
                     </Col>
                 );
                 })
-                : <h3>Loading...</h3>}
+                : <h2>Loading...</h2>}
             </Row>
         </Container>
     </div>
