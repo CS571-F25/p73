@@ -154,17 +154,18 @@ export default function AddRestaurantModal({show, setIsAddingRest, refresh}) {
             </Modal.Header>
 
             <Modal.Body>
+                <span style={{color: "darkred"}} className="mb-3">* = Required</span>
                 <Form onSubmit={handleCreateRestaurant}>
-                    <Form.Label htmlFor="restaurantName">Enter Restaurant Name <span style={{color: "red"}}>*</span> </Form.Label>
+                    <Form.Label htmlFor="restaurantName">Enter Restaurant Name <span style={{color: "darkred"}}>*</span> </Form.Label>
                     <Form.Control id="restaurantName" ref={nameRef} placeholder="Example"></Form.Control>
                     <br></br>
-                    <Form.Label htmlFor="restaurantImg">Enter Image URL <span style={{color: "red"}}>*</span></Form.Label>
+                    <Form.Label htmlFor="restaurantImg">Enter Image URL <span style={{color: "darkred"}}>*</span></Form.Label>
                     <Form.Control id="restaurantImg" ref={imageRef} placeholder="https://example.com/picture.jpg"></Form.Control>
                     <br></br>
-                    <Form.Label htmlFor="restaurantTags">Enter Tags <span style={{color: "red"}}>*</span></Form.Label>
+                    <Form.Label htmlFor="restaurantTags">Enter Tags <span style={{color: "darkred"}}>*</span></Form.Label>
                     <Form.Control id="restaurantTags" ref={tagsRef} placeholder="tag1, tag2, tag3"></Form.Control>
                     <br></br>
-                    <Form.Label htmlFor="restaurantMessage">Enter Message <span style={{color: "red"}}>*</span></Form.Label>
+                    <Form.Label htmlFor="restaurantMessage">Enter Message <span style={{color: "darkred"}}>*</span></Form.Label>
                     <Form.Control id="restaurantMessage" ref={msgRef} placeholder="Example Review"></Form.Control>
                     <br></br>
                     <Button type="submit">Finish</Button>
