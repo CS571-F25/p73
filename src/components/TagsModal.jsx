@@ -77,7 +77,7 @@ export default function ShowTagsModal({isAdd, show, setIsAddingRest, refresh, re
 
             <Modal.Body>
                 <Form onSubmit={handleTagManagement}>
-                    { isAdd ? <Form.Label htmlFor="restaurantTags">Add A Tag</Form.Label> : <Form.Label htmlFor="restaurantName">Remove A Tag</Form.Label>}
+                    { isAdd ? <Form.Label htmlFor="restaurantTags">Add A Tag <span style={{color: "red"}}>*</span></Form.Label> : <Form.Label htmlFor="restaurantTags">Remove A Tag <span style={{color: "red"}}>*</span></Form.Label>}
                     <Form.Control id="restaurantTags" ref={tagsRef} placeholder="Example Tag"></Form.Control>
                     <br></br>
                     <Button type="submit">Finish</Button>
