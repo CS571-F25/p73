@@ -22,10 +22,10 @@ export default function Landing(props) {
     }
 
     return <Container fluid className="py-5 text-center" style={{minHeight: "100vh", background: "radial-gradient(circle,rgba(255, 255, 255, 1) 0%, rgba(219, 252, 255, 1) 100%)"}}>
-        <h1>Welcome to Menu Meter!</h1>
+        <h1>Welcome to Menu Ranker!</h1>
 
         <Stack className="justify-content-center mb-5" direction="horizontal" gap={4}>
-            <Button variant="success" onClick={(e) => {
+            <Button aria-label="Top 10 Restaurants" variant="success" onClick={(e) => {
                 e.stopPropagation()
                 navigate(`/restaurants`)
             }}>Top 10 Restaurants</Button>
@@ -36,7 +36,7 @@ export default function Landing(props) {
                 // widen the space VERTICALLY. Why???? 
             }
             { restaurants ? 
-                <Button variant="warning" onClick={handleRandom}>Surprise Me</Button>
+                <Button aria-label="Surprise Me" variant="warning" onClick={handleRandom}>Surprise Me</Button>
             : <h2>Loading...</h2>}
         </Stack>
 
