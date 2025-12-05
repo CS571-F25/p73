@@ -194,7 +194,7 @@ export default function Search() {
         <Card className="p-3 shadow-sm mb-4">
             <Form onSubmit={handleSubmit}>
                 <Form.Label htmlFor="restaurantInput">Enter Restaurant</Form.Label>
-                <Form.Control aria-label="Enter Restaurant Here" id="restaurantInput" ref={restaurantRef}></Form.Control>
+                <Form.Control id="restaurantInput" ref={restaurantRef}></Form.Control>
                 <br></br>
                 <Button aria-label="Submit Restaurant Search" type="submit" className="mt-2" variant="primary">Search</Button>
                 <br></br>
@@ -223,7 +223,7 @@ export default function Search() {
                 const isLiked = likedRestaurants[rest.id] === true;
                 return (
                 <Col key={rest.restaurant} xs={12} md={4} lg={3} xl={3}>
-                    <RestaurantCard isLiked={isLiked} refresh={refresh} rest={rest}/>
+                    <RestaurantCard isLiked={isLiked} refresh={refresh} rest={rest} updateLikedRestaurants={updateLikedRestaurants}/>
                 </Col>
             )})
             : 

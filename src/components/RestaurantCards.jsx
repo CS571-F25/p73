@@ -3,7 +3,8 @@ import ToggleLike from "./ToggleLike";
 import {useNavigate} from "react-router";
 import {useState} from "react"
 
-export default function RestaurantCard({refresh, rest}) {
+export default function RestaurantCard({refresh, rest, isLiked, updateLikedRestaurants}) {
+    /*
     // I am writing this after having reviewed a bunch of local storage stuff for HW11, so the
     // idea for likedRestaurants came from HW11 to some extent. Since I am only storing restaurants the
     // user liked, and not the message history for each persona, I don't actually need to care about the key
@@ -12,8 +13,10 @@ export default function RestaurantCard({refresh, rest}) {
     const [likedRestaurants, setLikedRestaurants] = useState(() => {
         return JSON.parse(existingLikedRestaurants ? existingLikedRestaurants : "{}");
     });
+    */
     const navigate = useNavigate();
         
+    /*
     function  updateLikedRestaurants(id, liked) {
         // the idea is literally just create a function where the key is the restaurants id, 
         // and 1 = liked, 0 = not liked. Simple as that. When we need to update the local storage 
@@ -27,6 +30,7 @@ export default function RestaurantCard({refresh, rest}) {
     }
 
     const isLiked = likedRestaurants[rest.id] === true;
+    */
     // so I got near the end of my design and I wanted to make it so the card is "tab-able", because that was a requirement, i.e.,
     // every interactable feature should be usable via a keyboard. I searched online and I found this:
     // https://github.com/react-bootstrap/react-bootstrap/issues/6705

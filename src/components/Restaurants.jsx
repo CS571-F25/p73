@@ -21,6 +21,17 @@ export default function Restaurants() {
         return JSON.parse(existingLikedRestaurants ? existingLikedRestaurants : "{}");
     });
 
+    function  updateLikedRestaurants(id, liked) {
+        // the idea is literally just create a function where the key is the restaurants id, 
+        // and 1 = liked, 0 = not liked. Simple as that. When we need to update the local storage 
+        // b/c we liked a restaurant, we need to update it similar to what I did in I think HW5 with
+        // the badger cats. Just create a new updated object, have all of them be the same, and the one restaurant
+        // that was updated (given by id), set that one to be either 1 or 0 based on what we updated it to.
+        // then save that to localstorage
+        const updated = {...likedRestaurants, [id]: liked};
+        setLikedRestaurants(updated);
+        localStorage.setItem("liked-restaurants", JSON.stringify(updated));
+    }
     // PLANS: 
     // Of course styilize everything. Using basic react bootstrap stuff is kind of boring.
     // I need to do some sort of storage with the likes. I need to keep track of what restaurants
@@ -43,9 +54,10 @@ export default function Restaurants() {
                 .sort((a, b) => b.likes - a.likes)
                 .slice(0, 10)
                 .map(rest => {
+                    const isLiked = likedRestaurants[rest.id] === true;
                     return(
                     <Col key={rest.restaurant} xs={12} sm={6} md={4} lg={3} xl={3}>
-                        <RestaurantCard refresh={refresh} rest={rest}/>
+                        <RestaurantCard refresh={refresh} rest={rest} isLiked={isLiked} updateLikedRestaurants={updateLikedRestaurants}/>
                     </Col>
                 );
                 })
