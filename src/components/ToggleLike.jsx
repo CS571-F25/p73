@@ -3,6 +3,15 @@ import {useState, useEffect} from "react";
 
 export default function ToggleLike({rest, isLiked, updateLikedRestaurants, refresh}) {
     // I could just do useContext for the refresh, but I am lazy
+    const [clicked, setClicked] = useState(false);
+
+    function handleClick(e) {
+        e.stopPropagation();
+        setClicked(true);
+        toggleLike(rest, isLiked);
+        setTimeout(() => setClicked(false), 150);
+    }
+
     function toggleLike(rest, isLiked) {
         const updatedLikes = isLiked ? rest.likes - 1 : rest.likes + 1;
         //console.log(rest);
@@ -33,9 +42,8 @@ export default function ToggleLike({rest, isLiked, updateLikedRestaurants, refre
     }
 
     return <>
-        <Button className="w-100" variant={isLiked ? "danger" : "success"} onClick={(e) => {
-            e.stopPropagation()
-            toggleLike(rest, isLiked)
-        }}>{isLiked ? "Unlike" : "Like"}</Button>
+        <Button className="w-100" variant={isLiked ? "danger" : "success"} onClick={handleClick} style={{transition: "transform 0.15s ease", transform: clicked ? "scale(1.12)" : "scale(1)"}}>
+            {isLiked ? "Unlike" : "Like"}
+        </Button>
     </>
 }

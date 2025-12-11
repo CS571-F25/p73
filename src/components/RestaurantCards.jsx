@@ -1,9 +1,9 @@
-import {Card, Button, Stack, Container, Row, Col} from "react-bootstrap";
+import {Card, Button, Stack, Container, Row, Col, Badge} from "react-bootstrap";
 import ToggleLike from "./ToggleLike";
 import {useNavigate} from "react-router";
 import {useState} from "react"
 
-export default function RestaurantCard({refresh, rest, isLiked, updateLikedRestaurants}) {
+export default function RestaurantCard({refresh, rest, isLiked, updateLikedRestaurants, rank}) {
     /*
     // I am writing this after having reviewed a bunch of local storage stuff for HW11, so the
     // idea for likedRestaurants came from HW11 to some extent. Since I am only storing restaurants the
@@ -37,7 +37,9 @@ export default function RestaurantCard({refresh, rest, isLiked, updateLikedResta
     // basically, it seems like cards shouldn't be used as interactable features. SO, instead of re-writing this entire component, I decided
     // to keep it as it is, but also create an extra "go to" button that keyboard users can use to navigate to the specific restaurant
     return (
-        <Card aria-label="Restaurant Card" className="shadow" style={{width: '100%', aspectRatio: '1/1'}} onClick={() => {navigate(`/restaurants/${rest.restaurant}`)}}>
+        <Card aria-label="Restaurant Card" className="shadow" style={{width: '100%', aspectRatio: '1/1', position: "relative", transition: "transform 0.2s"}} onClick={() => {navigate(`/restaurants/${rest.restaurant}`)}}
+            onMouseEnter={e => e.currentTarget.style.transform = "scale(1.03)"} onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}>
+                {rank ? <Badge bg={rank === 1 ? "warning" : rank === 2 ? "info" : rank === 3 ? "dark" : "light"} text={rank === 1 ? "dark" : rank === 2 ? "dark" : rank === 3 ? "light" : "dark"} pill className="position-absolute top-0 start-0 m-2 px-3 py-2 fs-5">#{rank}</Badge>: undefined }
             <Card.Img variant="top" src={rest.img} style={{width: "100%", height: "50%", objectFit: "cover"}} alt={`Restaurant Name: ${rest.restaurant}`} />
             <Card.Body className="d-flex flex-column align-items-center">
             <Stack gap={0}>

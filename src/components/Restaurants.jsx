@@ -45,7 +45,7 @@ export default function Restaurants() {
     return <div style={{background: "linear-gradient(45deg,rgba(255, 255, 255, 1) 0%, rgba(249, 249, 249, 1) 35%, rgba(224, 247, 250, 1) 100%)"}}>
         <div style={{padding: "1rem"}}>
             <h1>Top 10 Restaurants: </h1>
-            <p>Only showcasing the most popular restaurants!</p>
+            <p>Ranked by most likes</p>
         </div>
         <br></br>
         <Container>
@@ -53,11 +53,11 @@ export default function Restaurants() {
                 {restaurants ? Object.values(restaurants)
                 .sort((a, b) => b.likes - a.likes)
                 .slice(0, 10)
-                .map(rest => {
+                .map((rest, index) => {
                     const isLiked = likedRestaurants[rest.id] === true;
                     return(
                     <Col key={rest.restaurant} xs={12} sm={6} md={4} lg={3} xl={3}>
-                        <RestaurantCard refresh={refresh} rest={rest} isLiked={isLiked} updateLikedRestaurants={updateLikedRestaurants}/>
+                        <RestaurantCard refresh={refresh} rest={rest} isLiked={isLiked} updateLikedRestaurants={updateLikedRestaurants} rank={index + 1}/>
                     </Col>
                 );
                 })
