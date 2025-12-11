@@ -202,7 +202,7 @@ export default function ViewSpecificRestaurant({rest}) {
                 </Form>
             </Card>
             <hr></hr>
-            <h3 className="mb-3">Reviews</h3>
+            <h2 className="mb-3">Reviews</h2>
             {currentMessages ? (
             <Stack gap={3}>
                 {currentMessages.map((message, i)=> {

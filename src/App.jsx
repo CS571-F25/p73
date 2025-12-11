@@ -9,6 +9,8 @@ import Landing from "./components/Landing"
 import SpecificRestaurant from "./components/SpecificRestaurant"
 import RestaurantsProvider from './RestaurantsContextProvider';
 
+// I think this counts as a component, no? It fits all the requirements, it does
+// export default, and it definitely has some use (context provider and hashrouter)
 function App() {
   const [restaurants, setRestaurants] = useState([]);
 

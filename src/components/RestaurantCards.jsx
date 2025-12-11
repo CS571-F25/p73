@@ -38,7 +38,7 @@ export default function RestaurantCard({refresh, rest, isLiked, updateLikedResta
     // to keep it as it is, but also create an extra "go to" button that keyboard users can use to navigate to the specific restaurant
     return (
         <Card aria-label="Restaurant Card" className="shadow" style={{width: '100%', aspectRatio: '1/1'}} onClick={() => {navigate(`/restaurants/${rest.restaurant}`)}}>
-            <Card.Img variant="top" src={rest.img} style={{width: "100%", height: "50%", objectFit: "cover"}} alt={rest.restaurant} />
+            <Card.Img variant="top" src={rest.img} style={{width: "100%", height: "50%", objectFit: "cover"}} alt={`Restaurant Name: ${rest.restaurant}`} />
             <Card.Body className="d-flex flex-column align-items-center">
             <Stack gap={0}>
                 <span className="fw-bold fs-5">{rest.restaurant}</span>
