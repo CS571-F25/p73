@@ -169,7 +169,7 @@ export default function ViewSpecificRestaurant({rest}) {
     // https://stackoverflow.com/questions/73038830/how-do-i-write-alt-text-for-an-icon-inside-a-button-tag
     return <div>
         <Card className="rounded-0 border-0 shadow">
-            <Card.Img src={restaurant[0].img} alt={restaurant[0].restaurant} style={{height: "45vh", objectFit: "cover"}}></Card.Img>
+            <Card.Img src={restaurant[0].img} alt={`Restaurant Name: ${restaurant[0].restaurant}`} style={{height: "45vh", objectFit: "cover"}}></Card.Img>
         </Card>
         <Container className="my-4">
             <Row className="align-items-center justify-content-between">
